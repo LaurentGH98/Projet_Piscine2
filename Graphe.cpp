@@ -28,7 +28,7 @@ Graphe::Graphe(std::string nomFichier)
     std::cout<<"\nSOMMETS :"<<std::endl;
     for (auto s : m_sommet)
     {
-        std::cout << s->getNumeroSommet() << " " << s->getNomSommet() << " " << s->getAltitude() << std::endl;
+        std::cout << s->getNumero() << " " << s->getNom() << " " << s->getAltitude() << std::endl;
     }
 
 
@@ -50,10 +50,10 @@ Graphe::Graphe(std::string nomFichier)
     /**AFFICHAGE DES ARCS**/
     std::cout<<"\nNbr arcs = "<< m_nbrArc <<std::endl;
     std::cout<<"\nARCS :"<<std::endl;
-    for (auto s : m_arc)
+    for (auto a : m_arc)
     {
-        std::cout << s->getNumeroArc() << " " << s->getNomArc() << " " << s->getTypeArc()<<" " ;
-        s->afficherArc();
+        std::cout << a->getNumero() << " " << a->getNom() << " " << a->getType()<<" " ;
+        a->afficher();
     }
 
 }
@@ -76,21 +76,21 @@ void Graphe::infoArc()
 
     while(Num_Trouve == false) // tant que l'arete n'a pas été trouvé
     {
-        for(auto s : m_arc) // on parcourt le vector d'arc
+        for(auto a : m_arc) //a pour arc; on parcourt le vector d'arc
         {
-            if(Num_Arc == s->getNumeroArc()) // si le numéro existe dans le vector
+            if(Num_Arc == a->getNumero()) // si le numéro existe dans le vector
             {
                 std::cout << "\nVous avez choisi le trajet suivant :" << std::endl;
-                std::cout << "Numero: " << s->getNumeroArc() << "\nNom: " << s->getNomArc() << "\nType: " << s->getTypeArc()<< std::endl;
-                std::cout << "Point de depart: " << s->getSommetAdj().first->getNomSommet() << " (" << s->getSommetAdj().first->getNumeroSommet()<< ")" << std::endl;
-                std::cout << "Point d'arrivee: " << s->getSommetAdj().second->getNomSommet() << " (" << s->getSommetAdj().second->getNumeroSommet() << ")" << std::endl;
-                std::cout << "Duree entre ces deux points: " << s->getDureeArc()  << " minute(s)" <<std::endl;
+                std::cout << "Numero: " << a->getNumero() << "\nNom: " << a->getNom() << "\nType: " << a->getType()<< std::endl;
+                std::cout << "Point de depart: " << a->getSommetAdj().first->getNom() << " (" << a->getSommetAdj().first->getNumero()<< ")" << std::endl;
+                std::cout << "Point d'arrivee: " << a->getSommetAdj().second->getNom() << " (" << a->getSommetAdj().second->getNumero() << ")" << std::endl;
+                std::cout << "Duree entre ces deux points: " << a->getDuree()  << " minute(s)" <<std::endl;
 
                 Num_Trouve = true; // alors on a trouvé l'arete
                 break;
             }
 
-            else if( (s->getNumeroArc()>=95) && (Num_Arc != s->getNumeroArc()) ) // sinon
+            else if( (a->getNumero()>=95) && (Num_Arc != a->getNumero()) ) // sinon
             {
                 std::cout << "\nCe trajet n'existe pas.\nVeuillez saisir a nouveau: ";
                 std::cin >> Num_Arc2;
@@ -101,7 +101,7 @@ void Graphe::infoArc()
     }
 }
 
-
+///Pour connaître les arcs/trajets entrants et sortants à un sommet choisi
 void Graphe::infoSommet()
 {
 
@@ -110,7 +110,7 @@ void Graphe::infoSommet()
 
     std::cout<<"\nSur quel point de station souhaitez vous vous renseigner ?(Entrez un numero) ";
 
-    while (boucle==false)   //blindage de la saisi des sommets pour les entiers
+    while (boucle==false)   //blindage de la saisie des sommets pour les entiers
     {
         std::cout<<std::endl;
         std::cin>> numSomChoisi;
@@ -127,51 +127,52 @@ void Graphe::infoSommet()
 
 
     std::cout<<std::endl;
-    std::cout<<"Voici toutes les pistes ou remontes sortant du point de stations "<<numSomChoisi<<" :"<<std::endl;
+    std::cout<<"Voici toutes les pistes ou remontees sortant du point de station "<<numSomChoisi<<" :"<<std::endl;
     std::cout<<std::endl;
 
-    /*Premiere boucle pour trouver les sommets sortant*/
-    for(auto elem : m_arc)
+    /*Premiere boucle pour trouver les sommets sortants*/
+    for(auto elem : m_arc) //on parcourt la liste des arcs du graphe
     {
-        if(elem->getSommetAdj().first->getNumeroSommet() == numSomChoisi)
+        if(elem->getSommetAdj().first->getNumero() == numSomChoisi) //si le numéro du sommet choisi correspond à la première extrémité
+                                                                    //alors le trajet est forcément sortant
         {
-            std::cout<<"Ce trajet se dirigeant vers : "<<elem->getSommetAdj().second->getNomSommet()<<" s'appelle : "<<elem->getNomArc();
+            std::cout<<"Ce trajet se dirigeant vers : "<<elem->getSommetAdj().second->getNom()<<" s'appelle : "<<elem->getNom();
 
             /*Conditions pour donné le nom du type de trajet */
-            if((elem->getTypeArc()) == "V")
+            if((elem->getType()) == "V")
                 std::cout<<" et c'est une piste verte.";
 
-            if((elem->getTypeArc()) == "B")
+            if((elem->getType()) == "B")
                 std::cout<<" et c'est une piste bleue.";
 
-            if((elem->getTypeArc()) == "R")
+            if((elem->getType()) == "R")
                 std::cout<<" et c'est une piste rouge.";
 
-            if((elem->getTypeArc()) == "N")
+            if((elem->getType()) == "N")
                 std::cout<<" et c'est une piste noire.";
 
-            if((elem->getTypeArc()) == "KL")
+            if((elem->getType()) == "KL")
                 std::cout<<" et c'est une piste de kilometre lance.";
 
-            if((elem->getTypeArc()) == "SURF")
+            if((elem->getType()) == "SURF")
                 std::cout<<" et c'est un snowpark.";
 
-            if((elem->getTypeArc()) == "TPH")
+            if((elem->getType()) == "TPH")
                 std::cout<<" et c'est un telepherique.";
 
-            if((elem->getTypeArc()) == "TC")
+            if((elem->getType()) == "TC")
                 std::cout<<" et c'est des telecabines.";
 
-            if((elem->getTypeArc()) == "TSD")
+            if((elem->getType()) == "TSD")
                 std::cout<<" et c'est un telesiege debrayable.";
 
-            if((elem->getTypeArc()) == "TS")
+            if((elem->getType()) == "TS")
                 std::cout<<" et c'est un telesiege.";
 
-            if((elem->getTypeArc()) == "TK")
+            if((elem->getType()) == "TK")
                 std::cout<<" et c'est un teleski.";
 
-            if((elem->getTypeArc()) == "BUS")
+            if((elem->getType()) == "BUS")
                 std::cout<<" et c'est une navette.";
 
             std::cout<<std::endl;
@@ -184,47 +185,47 @@ void Graphe::infoSommet()
     std::cout<<std::endl;
 
     /*Deuxieme boucle pour trouver les somments entrant*/
-    for(auto elem : m_arc)
+    for(auto elem : m_arc) //même démarche
     {
-        if(elem->getSommetAdj().second->getNumeroSommet() == numSomChoisi)
+        if(elem->getSommetAdj().second->getNumero() == numSomChoisi)
         {
-            std::cout<<"Ce trajet arrive de : "<<elem->getSommetAdj().first->getNomSommet()<<" s'appelle : "<<elem->getNomArc();
+            std::cout<<"Ce trajet arrive de : "<<elem->getSommetAdj().first->getNom()<<" s'appelle : "<<elem->getNom();
 
             /*Conditions pour donné le nom du type de trajet */
-            if((elem->getTypeArc()) == "V")
+            if((elem->getType()) == "V")
                 std::cout<<" et c'est une piste verte.";
 
-            if((elem->getTypeArc()) == "B")
+            if((elem->getType()) == "B")
                 std::cout<<" et c'est une piste bleue.";
 
-            if((elem->getTypeArc()) == "R")
+            if((elem->getType()) == "R")
                 std::cout<<" et c'est une piste rouge.";
 
-            if((elem->getTypeArc()) == "N")
+            if((elem->getType()) == "N")
                 std::cout<<" et c'est une piste noire.";
 
-            if((elem->getTypeArc()) == "KL")
+            if((elem->getType()) == "KL")
                 std::cout<<" et c'est une piste de kilometre lance.";
 
-            if((elem->getTypeArc()) == "SURF")
+            if((elem->getType()) == "SURF")
                 std::cout<<" et c'est un snowpark.";
 
-            if((elem->getTypeArc()) == "TPH")
+            if((elem->getType()) == "TPH")
                 std::cout<<" et c'est un telepherique.";
 
-            if((elem->getTypeArc()) == "TC")
+            if((elem->getType()) == "TC")
                 std::cout<<" et c'est des telecabines.";
 
-            if((elem->getTypeArc()) == "TSD")
+            if((elem->getType()) == "TSD")
                 std::cout<<" et c'est un telesiege debrayable.";
 
-            if((elem->getTypeArc()) == "TS")
+            if((elem->getType()) == "TS")
                 std::cout<<" et c'est un telesiege.";
 
-            if((elem->getTypeArc()) == "TK")
+            if((elem->getType()) == "TK")
                 std::cout<<" et c'est un teleski.";
 
-            if((elem->getTypeArc()) == "BUS")
+            if((elem->getType()) == "BUS")
                 std::cout<<" et c'est une navette.";
 
             std::cout<<std::endl;

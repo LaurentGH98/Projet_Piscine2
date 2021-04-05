@@ -3,11 +3,11 @@
 ///constructeur
 Arc::Arc(int num, std::string nom, std::string type,Sommet* ext1, Sommet* ext2, float duree)
 {
-    m_numeroArc=num;
-    m_nomArc=nom;
-    m_typeArc=type;
+    m_numero=num;
+    m_nom=nom;
+    m_type=type;
     m_SommetAdjacent=std::make_pair(ext1,ext2);
-    m_dureeArc=duree;
+    m_duree=duree;
 
 }
 
@@ -17,25 +17,25 @@ Arc::~Arc()
 }
 
 ///getters
-float Arc::getDureeArc()const
+float Arc::getDuree()const
 {
-    return m_dureeArc;
+    return m_duree;
 }
 
 
-std::string Arc::getNomArc()const
+std::string Arc::getNom()const
 {
-    return m_nomArc;
+    return m_nom;
 }
 
-int Arc::getNumeroArc()const
+int Arc::getNumero()const
 {
-    return m_numeroArc;
+    return m_numero;
 }
 
-std::string Arc::getTypeArc()const
+std::string Arc::getType()const
 {
-    return m_typeArc;
+    return m_type;
 }
 
 std::pair<Sommet*,Sommet*> Arc::getSommetAdj()const
@@ -43,7 +43,7 @@ std::pair<Sommet*,Sommet*> Arc::getSommetAdj()const
     return m_SommetAdjacent;
 }
 
-void Arc::afficherArc()const
+void Arc::afficher()const
 {
-    std::cout<<m_SommetAdjacent.first->getNumeroSommet()<<"-"<<m_SommetAdjacent.second->getNumeroSommet()<<":  "<<m_dureeArc<<std::endl;
+    std::cout<<m_SommetAdjacent.first->getNumero()<<"-"<<m_SommetAdjacent.second->getNumero()<<":  "<<m_duree<<std::endl;
 }

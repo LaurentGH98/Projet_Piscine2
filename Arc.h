@@ -7,10 +7,10 @@ class Arc
 {
 private:
     std::pair<Sommet*,Sommet*> m_SommetAdjacent; // plus facile d'utilisation + associer les 2 extrémités d'un arc en un seul attribut pour un arc
-    float m_dureeArc;
-    std::string m_nomArc;
-    int m_numeroArc;
-    std::string m_typeArc;
+    float m_duree; //temps du trajet correspondant à la pondération (pour Dijkstra)
+    std::string m_nom;
+    int m_numero;
+    std::string m_type;
 
 public:
     ///constructeur et destructeur
@@ -18,13 +18,13 @@ public:
     ~Arc();
 
     ///getters
-    float getDureeArc()const;
-    std::string getNomArc()const;
-    int getNumeroArc()const;
-    std::string getTypeArc()const;
+    float getDuree()const;
+    std::string getNom()const;
+    int getNumero()const;
+    std::string getType()const;
     std::pair<Sommet*,Sommet*> getSommetAdj()const;
 
-    void afficherArc()const;
+    void afficher()const; //affiche les attributs d'un arc
 };
 
 #endif // ARC_H_INCLUDED
