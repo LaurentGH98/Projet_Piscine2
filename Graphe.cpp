@@ -1,6 +1,9 @@
 #include "Graphe.h"
 #include <fstream>
 
+
+//HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);//Ici, on récupère un handle vers ce qui représente la sortie standard sous Windows.
+
 ///constructeur
 Graphe::Graphe(std::string nomFichier)
 {
@@ -24,12 +27,12 @@ Graphe::Graphe(std::string nomFichier)
 
 
     /**AFFICHAGE DES SOMMETS**/
-    std::cout<<"Nbr Sommets = "<< m_nbrSommet <<std::endl;
-    std::cout<<"\nSOMMETS :"<<std::endl;
-    for (auto s : m_sommet)
-    {
-        std::cout << s->getNumero() << " " << s->getNom() << " " << s->getAltitude() << std::endl;
-    }
+    /* std::cout<<"Nbr Sommets = "<< m_nbrSommet <<std::endl;
+     std::cout<<"\nSOMMETS :"<<std::endl;
+     for (auto s : m_sommet)
+     {
+         std::cout << s->getNumero() << " " << s->getNom() << " " << s->getAltitude() << std::endl;
+     }*/
 
 
     ifs >> m_nbrArc;
@@ -48,6 +51,37 @@ Graphe::Graphe(std::string nomFichier)
     }
 
     /**AFFICHAGE DES ARCS**/
+    /*std::cout<<"\nNbr arcs = "<< m_nbrArc <<std::endl;
+    std::cout<<"\nARCS :"<<std::endl;
+    for (auto a : m_arc)
+    {
+        std::cout << a->getNumero() << " " << a->getNom() << " " << a->getType()<<" " ;
+        a->afficher();
+    }*/
+
+}
+
+
+///destructeur
+Graphe::~Graphe()
+{
+}
+
+
+void Graphe::AffichageSommet()
+{
+    /**AFFICHAGE DES SOMMETS**/
+    std::cout<<"Nbr Sommets = "<< m_nbrSommet <<std::endl;
+    std::cout<<"\nSOMMETS :"<<std::endl;
+    for (auto s : m_sommet)
+    {
+        std::cout << s->getNumero() << " " << s->getNom() << " " << s->getAltitude() << std::endl;
+    }
+}
+
+void Graphe::AffichageArc()
+{
+    /**AFFICHAGE DES ARCS**/
     std::cout<<"\nNbr arcs = "<< m_nbrArc <<std::endl;
     std::cout<<"\nARCS :"<<std::endl;
     for (auto a : m_arc)
@@ -55,12 +89,6 @@ Graphe::Graphe(std::string nomFichier)
         std::cout << a->getNumero() << " " << a->getNom() << " " << a->getType()<<" " ;
         a->afficher();
     }
-
-}
-
-///destructeur
-Graphe::~Graphe()
-{
 }
 
 ///méthode permettant à l'utilisateur de savoir d'où il part et où il arrive
@@ -134,7 +162,7 @@ void Graphe::infoSommet()
     for(auto elem : m_arc) //on parcourt la liste des arcs du graphe
     {
         if(elem->getSommetAdj().first->getNumero() == numSomChoisi) //si le numéro du sommet choisi correspond à la première extrémité
-                                                                    //alors le trajet est forcément sortant
+            //alors le trajet est forcément sortant
         {
             std::cout<<"Ce trajet se dirigeant vers : "<<elem->getSommetAdj().second->getNom()<<" s'appelle : "<<elem->getNom();
 
@@ -233,3 +261,298 @@ void Graphe::infoSommet()
         }
     }
 }
+
+
+void Graphe::Menu()
+{
+    int choix(0);//pour menu
+    bool valide(false);//pour blindage
+    bool boucle(false);
+
+    std::cout<<std::endl;
+    std::cout<<"********************************************************************************"<<std::endl;
+    std::cout<<"**************************************BONJOUR!**********************************"<<std::endl;
+    std::cout<<"********************************************************************************"<<std::endl;
+    std::cout<<std::endl;
+
+
+    while(boucle == false )
+    {
+        std::cout<<std::endl;
+        std::cout<<"**************************************MENU**************************************"<<std::endl;
+        std::cout<<"/1/  Information sur un trajet"<<std::endl;
+        std::cout<<"/2/  Information sur un de nos points de stations"<<std::endl;
+        std::cout<<"/3/  Information sur les plus courts chemin depuis votre position"<<std::endl;
+        std::cout<<"/4/  Information sur le chemin le plus rapide entre 2 points"<<std::endl;
+        std::cout<<"/5/  Information sur le chemin le plus interressant pour vous"<<std::endl;
+        std::cout<<"/6/  Information sur nos points de stations et nos trajets"<<std::endl;
+        std::cout<<"/7/  Information flots"<<std::endl;
+        std::cout<<"/8/  Quitter la borne"<<std::endl;
+        std::cout<<std::endl;
+        std::cout<<"Quelle information souhaitez-vous connaitre par rapport a notre magnifique station ?(Entrez un numero)  "<<std::endl;
+
+
+        while (valide==false)   //blindage de la saisie des sommets pour les entiers
+        {
+            std::cin>> choix;
+
+            if( choix>=1 && choix<=8)
+                valide=true;
+            else
+            {
+                std::cout<<"Choix impossible, veuillez recommencer : ";
+            }
+        }
+
+        switch(choix)
+        {
+        case 1:
+            system("cls");
+            std::cout<<"#############################################"<<std::endl;
+            std::cout<<"#           .-~~\\                           #"<<std::endl;
+            std::cout<<"#          /     \\ _                        #"<<std::endl;
+            std::cout<<"#          ~x   .-~_)_                      #"<<std::endl;
+            std::cout<<"#            ~x*.-~   ~-.                   #"<<std::endl;
+            std::cout<<"#        _   ( /         \\   _              #"<<std::endl;
+            std::cout<<"#        ||   T  o  o     Y  ||             #"<<std::endl;
+            std::cout<<"#      ==:l   l   <       !  I;==           #"<<std::endl;
+            std::cout<<"#         \\\\   \\  .__/   /  //              #"<<std::endl;
+            std::cout<<"#          \\\\ ,r*-,___.-'r.//               #"<<std::endl;
+            std::cout<<"#           }^ \\.( )   _.'//.               #"<<std::endl;
+            std::cout<<"#          /    }~Xi--~  //  \\              #"<<std::endl;
+            std::cout<<"#          Y    Y I\\ \\    *    Y            #"<<std::endl;
+            std::cout<<"#          |    | |o\\ \\        |            #"<<std::endl;
+            std::cout<<"#          |    l_l  Y T       |  -Row      #"<<std::endl;
+            std::cout<<"#          l      *o l_j       !            #"<<std::endl;
+            std::cout<<"#           \\                 /             #"<<std::endl;
+            std::cout<<"#    ___,.---^.     o       .^---.._____    #"<<std::endl;
+            std::cout<<"#*~~~          *           ~            ~~~*#"<<std::endl;
+            std::cout<<"#############################################"<<std::endl;
+            infoArc();
+            valide=false;
+            break;
+        case 2:
+            system("cls");
+            std::cout<<"#############################################################"<<std::endl;
+            std::cout<<"#        _    .  ,   .           .                          #"<<std::endl;
+            std::cout<<"#    *  / \\_ *  / \\_      _  *        *   /\\'__        *    #"<<std::endl;
+            std::cout<<"#      /    \\  /    \\,   ((        .    _/  /  \\  *'.       #"<<std::endl;
+            std::cout<<"#   . /\\/\\  /\\/ :' __ \\_  `          _^/  ^/    `--.        #"<<std::endl;
+            std::cout<<"#    /    \\/  \\  _/  \\-'\\      *    /.' ^_   \\_   .'\\  *    #"<<std::endl;
+            std::cout<<"#  /\\  .-   `. \\/     \\ /==~=-=~=-=-;.  _/ \\ -. `_/   \\     #"<<std::endl;
+            std::cout<<"# /  `-.__ ^   / .-'.--\\ =-=~_=-=~=^/  _ `--./ .-'  `-      #"<<std::endl;
+            std::cout<<"#/        `.  / /       `.~-^=-=~=^=.-'      '-._ `._       #"<<std::endl;
+            std::cout<<"#############################################################"<<std::endl;
+            infoSommet();
+            valide=false;
+            break;
+        case 3:
+            system("cls");
+            std::cout<<"#############################################################################"<<std::endl;
+            std::cout<<"#          /\\                                                               #"<<std::endl;
+            std::cout<<"#         /**\\                                                              #"<<std::endl;
+            std::cout<<"#        /****\\   /\\                                                        #"<<std::endl;
+            std::cout<<"#       /      \\ /**\\                                                       #"<<std::endl;
+            std::cout<<"#      /  /\\    /    \\        /\\    /\\  /\\      /\\            /\\/\\/\\  /\\    #"<<std::endl;
+            std::cout<<"#     /  /  \\  /      \\      /  \\/\\/  \\/  \\  /\\/  \\/\\  /\\  /\\/ / /  \\/  \\   #"<<std::endl;
+            std::cout<<"#    /  /    \\/ /\\     \\    /    \\ \\  /    \\/ /   /  \\/  \\/  \\  /    \\   \\  #"<<std::endl;
+            std::cout<<"#   /  /      \\/  \\/\\   \\  /      \\    /   /    \\                           #"<<std::endl;
+            std::cout<<"#__/__/_______/___/__\\___\\__________________________________________________#"<<std::endl;
+            std::cout<<"#############################################################################"<<std::endl;
+            //bfs les plus courts chemins
+            valide=false;
+            break;
+        case 4:
+            system("cls");
+            std::cout<<"###############################"<<std::endl;
+            std::cout<<"#            o\\               #"<<std::endl;
+            std::cout<<"#  _________/__\\__________    #"<<std::endl;
+            std::cout<<"#  |                  - (  |  #"<<std::endl;
+            std::cout<<"# ,'-.                 . `-|  #"<<std::endl;
+            std::cout<<"#(____ .       ,-.    '   ||  #"<<std::endl;
+            std::cout<<"#  |          /\\,-\\   ,-.     #"<<std::endl;
+            std::cout<<"#  |      ,-./     \\ /'.-\\ |  #"<<std::endl;
+            std::cout<<"#  |     /-.,\\      /     \\|  #"<<std::endl;
+            std::cout<<"#  |    /     \\    ,-.     \\  #"<<std::endl;
+            std::cout<<"#  |___/_______\\__/___\\_____\\ #"<<std::endl;
+            std::cout<<"###############################"<<std::endl;
+            //et dijkstra (4.4)
+            valide=false;
+            break;
+        case 5:
+            system("cls");
+            std::cout<<"######################################"<<std::endl;
+            std::cout<<"#            *                       #"<<std::endl;
+            std::cout<<"#            XX                      #"<<std::endl;
+            std::cout<<"#           MMMMM                    #"<<std::endl;
+            std::cout<<"#           //(00                    #"<<std::endl;
+            std::cout<<"#        .:.....                     #"<<std::endl;
+            std::cout<<"#        .:::::::::                  #"<<std::endl;
+            std::cout<<"#       :: %%%%%% ::.                #"<<std::endl;
+            std::cout<<"#      ::  ::::::  :::::::I)         #"<<std::endl;
+            std::cout<<"#      (%  ::::::         |          #"<<std::endl;
+            std::cout<<"#      /   |   /_____     |          #"<<std::endl;
+            std::cout<<"#     /    |         ))   |          #"<<std::endl;
+            std::cout<<"#    /      ------/ //    |          #"<<std::endl;
+            std::cout<<"#   /            / //     |          #"<<std::endl;
+            std::cout<<"#  /            / //      |          #"<<std::endl;
+            std::cout<<"# *            ZZZZ       *          #"<<std::endl;
+            std::cout<<"#    _________ZZZZZZ_________//_//   #"<<std::endl;
+            std::cout<<"#------------------------------------#"<<std::endl;
+            std::cout<<"######################################"<<std::endl;
+
+            //chemin interessant (4.5)==kruskal
+            valide=false;
+            break;
+        case 6:
+            system("cls");
+            std::cout<<"##################################################"<<std::endl;
+            std::cout<<"#                /----|       .         .        #"<<std::endl;
+            std::cout<<"#  .            /     [   .        .         .   #"<<std::endl;
+            std::cout<<"#         ______|---- _|__     .        .        #"<<std::endl;
+            std::cout<<"#.     _--    --\\_<\\_//   \\-----           .     #"<<std::endl;
+            std::cout<<"#     _  _--___   \\__/     ___  -----_ **     *  #"<<std::endl;
+            std::cout<<"#*  _- _-      --_         /  [ ----__  --_  *   #"<<std::endl;
+            std::cout<<"#*/__-      .    [           _[  *** --_  [*     #"<<std::endl;
+            std::cout<<"#  [*/ .          __[/-----__/   [**     [*/     #"<<std::endl;
+            std::cout<<"#        .     /--  /            /               #"<<std::endl;
+            std::cout<<"#     .        /   /   /[----___/        .       #"<<std::endl;
+            std::cout<<"#             /   /*[  !   /==/              .   #"<<std::endl;
+            std::cout<<"# .          /   /==[   |/==/      .             #"<<std::endl;
+            std::cout<<"#          _/   /=/ | _ |=/   .               .  #"<<std::endl;
+            std::cout<<"#         /_   //  / _ _//              .        #"<<std::endl;
+            std::cout<<"#.        [ '//    |__//    .    .            .  #"<<std::endl;
+            std::cout<<"#        /==/  .  /==/                .          #"<<std::endl;
+            std::cout<<"#      /==/     /==/                       .     #"<<std::endl;
+            std::cout<<"#     /==/     /==/       .       .    .         #"<<std::endl;
+            std::cout<<"#  _/==/    _/==/            .                   #"<<std::endl;
+            std::cout<<"# [|*      [|*                   White Powder!!  #"<<std::endl;
+            std::cout<<"##################################################"<<std::endl;
+            //info listes sommets et arcs
+            AffichageSommet();
+            AffichageArc();
+            valide=false;
+            break;
+        case 7:
+            system("cls");
+            std::cout<<"#####################################################################"<<std::endl;
+            std::cout<<"# -   -       -   -     -  -  -    -     -       -   -   -  -    -  #"<<std::endl;
+            std::cout<<"#- -   (  -      -    -  -   -   -    -   -    -   -   -    -     - #"<<std::endl;
+            std::cout<<"#-  (     )   (   |\\  -  -       -     -      -    -  --    -  - -  #"<<std::endl;
+            std::cout<<"# -   ) -  -   )  ) \\  -       _  .---.  -    -    -    -      -   -#"<<std::endl;
+            std::cout<<"#-  -   -    -  (/   \\   -  - (_)-.   _\\ - -    -     -  -      -  -#"<<std::endl;
+            std::cout<<"# -     .--.  -  \\   | -     -     \\ /u( -   -   -      -      -   -#"<<std::endl;
+            std::cout<<"#   .-./ ___\\    /\\  )    -   -  - _\\_-/   -     -   -   -  -    -  #"<<std::endl;
+            std::cout<<"# - `-'\\|. .| - // \\/   -  -   -  /    \\     -     --       -    - -#"<<std::endl;
+            std::cout<<"#  -   __\\-/__ (_)    -  -   - - /  \\ \\ \\___    -       -    -   -  #"<<std::endl;
+            std::cout<<"# -   (  \\:/  // | -  --  -  -  /   /\\ \\___/)     -  -  -    -   -.-#"<<std::endl;
+            std::cout<<"#   -  \\ \\:  //V /  -  -     - /`._/ -\\___(_) \\        -   -   .-'  #"<<std::endl;
+            std::cout<<"#_-  - (\\ \\_//`-' - -  -  -    |\\  \\  -      \\ \\  -  -    -   /     #"<<std::endl;
+            std::cout<<"# `. - (_\\(_)) -    -   -  - - | \\  \\   -  -  \\ \\___ .-. _   |      #"<<std::endl;
+            std::cout<<"#   \\  \\  // /  -  -   -   -  /  /)  )-     -  \\/__ (  _( ) /       #"<<std::endl;
+            std::cout<<"#    \\ |  |  | -  -    -  -  /  //  /   - -   -|   `-.(   )'        #"<<std::endl;
+            std::cout<<"#     `--------------------------------------------------'          #"<<std::endl;
+            std::cout<<"#####################################################################"<<std::endl;
+            //flots(4.6)
+            valide=false;
+            break;
+        case 8:
+            //Quitter
+            std::cout<<"#####################################################################"<<std::endl;
+            std::cout<<"#                     ,---.           ,---.                         #"<<std::endl;
+            std::cout<<"#                    / /*`.\\.--***--./,'*\\ \\                        #"<<std::endl;
+            std::cout<<"#                    \\ \\    _       _    / /                        #"<<std::endl;
+            std::cout<<"#                     `./  / __   __ \\  \\,'                         #"<<std::endl;
+            std::cout<<"#                      /    /_O)_(_O\\    \\                          #"<<std::endl;
+            std::cout<<"#                      |  .-'  ___  `-.  |                          #"<<std::endl;
+            std::cout<<"#                   .--|       \\_/       |--.                       #"<<std::endl;
+            std::cout<<"#                 ,'    \\   \\   |   /   /    `.                     #"<<std::endl;
+            std::cout<<"#                /       `.  `--^--'  ,'       \\                    #"<<std::endl;
+            std::cout<<"#             .-*****-.    `--.___.--'     .-*****-.                #"<<std::endl;
+            std::cout<<"#.-----------/         \\------------------/         \\--------------.#"<<std::endl;
+            std::cout<<"#| .---------\\         /----------------- \\         /------------. |#"<<std::endl;
+            std::cout<<"#| |          `-`--`--'                    `--'--'-'             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                PROFITEZ BIEN DE VOTRE SEJOUR !!             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                        A TRES BIENTOT !!                    | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |                                                             | |#"<<std::endl;
+            std::cout<<"#| |_____________________________________________________________| |#"<<std::endl;
+            std::cout<<"#|_________________________________________________________________|#"<<std::endl;
+            std::cout<<"#                   )__________|__|__________(                      #"<<std::endl;
+            std::cout<<"#                  |            ||            |                     #"<<std::endl;
+            std::cout<<"#                  |____________||____________|                     #"<<std::endl;
+            std::cout<<"#                    ),-----.(      ),-----.(                       #"<<std::endl;
+            std::cout<<"#                  ,'   ==.   \\    /  .==    `.                     #"<<std::endl;
+            std::cout<<"#                 /            )  (            \\                    #"<<std::endl;
+            std::cout<<"#                 `==========='    `==========='                    #"<<std::endl;
+            std::cout<<"#####################################################################"<<std::endl;
+
+            boucle=true;
+            break;
+
+        }
+
+    }
+
+
+//HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);//Ici, on récupère un handle vers ce qui représente la sortie standard sous Windows.
+//SetConsoleTextAttribute(consoleHandle, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_INTENSITY);
+//Ici, on change les attributs. Tu as droit aux 3 couleurs primaire informatique (rouge, vert et bleu)
+//que tu peux mélanger entre elle pour faire plus de couleurs (par exemple vert + bleu = jaune)...Tu peux coupler ces mélanges de couleur avec une intensité de couleur
+// plus élevé avec INTENSITY...Pour l'exemple du jaune, ca passerait d'un jaune sale à un jaune lumineux. Ici, ça met du blanc flashy sur fond rouge flashy.
+
+    /*std::cout << "La boutique se compose donc de : " << std::endl << std::endl;
+        SetConsoleTextAttribute(hConsole, 12);
+        std::cout << "Cartes CREATURES";
+        SetConsoleTextAttribute(hConsole, 2);
+        std::cout<<"                                Cartes ENERGIE";
+        SetConsoleTextAttribute(hConsole, 6);
+        std::cout<<"                             Cartes Speciales" << std::endl << std::endl;
+        SetConsoleTextAttribute(hConsole, 7);*/
+}
+
+
+
+
+
+
+/*SOURCES: Art by Joan Stark--> https://www.asciiart.eu/nature/mountains
+                            --> https://www.asciiart.eu/sports-and-outdoors/skiing
+                            --> https://www.asciiart.eu/nature/snows
+                          -->   https://www.asciiart.eu/holiday-and-events/christmas/snowmen*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

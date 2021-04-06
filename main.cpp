@@ -4,8 +4,12 @@
 int main()
 {
     Graphe g{"data_arcs.txt"};
-    g.infoArc();
-    g.infoSommet();
+
+    g.Menu();
+
+
+    //g.infoArc();
+    //g.infoSommet();
 
     return 0;
 }

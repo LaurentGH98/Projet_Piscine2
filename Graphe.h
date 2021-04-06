@@ -6,6 +6,7 @@
 #include "Sommet.h"
 #include "Arc.h"
 
+
 class Graphe
 {
 private:
@@ -27,6 +28,10 @@ public:
 
     ///méthode algorithme Dijkstra
     void Dijkstra(); //Peut se décomposer en plusieurs méthodes, on verra plus tard
+
+    void Menu();
+    void AffichageSommet();
+    void AffichageArc();
 
 };
 
