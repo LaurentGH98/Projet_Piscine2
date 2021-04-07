@@ -6,6 +6,7 @@
 #include "Sommet.h"
 #include "Arc.h"
 
+
 class Graphe
 {
 private:
@@ -30,6 +31,10 @@ public:
     void chemin_interessant(); // méthode chemin le plus intéressant
     void saisi_depart_arrivee(std::vector<Arc*>arcs_tries); // saisi des sommets de départ et d'arrivée par l'utilisateur
     void Kruskal(int x1, int x2, std::vector<Arc*>arcs_tries); // algo Kruskal + affichage
+
+    void Menu();
+    void AffichageSommet();
+    void AffichageArc();
 
 };
 

@@ -4,9 +4,10 @@
 int main()
 {
     Graphe g{"data_arcs.txt"};
-    //g.infoArc();
-    //g.infoSommet();
-    g.chemin_interessant();
+
+   // g.chemin_interessant();
+    g.Menu();
+
 
     return 0;
 }
