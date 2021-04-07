@@ -28,19 +28,19 @@ Graphe::Graphe(std::string nomFichier)
 
     /**AFFICHAGE DES SOMMETS**/
 
-    /*std::cout<<"Nbr Sommets = "<< m_nbrSommet <<std::endl;
+    std::cout<<"Nbr Sommets = "<< m_nbrSommet <<std::endl;
     std::cout<<"\nSOMMETS :"<<std::endl;
     for (auto s : m_sommet)
     {
         std::cout << s->getNumero() << " " << s->getNom() << " " << s->getAltitude() << std::endl;
-    }*/
+    }
 
-    /* std::cout<<"Nbr Sommets = "<< m_nbrSommet <<std::endl;
+     std::cout<<"Nbr Sommets = "<< m_nbrSommet <<std::endl;
      std::cout<<"\nSOMMETS :"<<std::endl;
      for (auto s : m_sommet)
      {
          std::cout << s->getNumero() << " " << s->getNom() << " " << s->getAltitude() << std::endl;
-     }*/
+     }
 
 
 
@@ -50,23 +50,22 @@ Graphe::Graphe(std::string nomFichier)
 
     int numArc, ext1,ext2;
     std::string nomArc, typeArc;
-    float tpsTrajet;
     for (int i=0; i<m_nbrArc; ++i)
     {
-        ifs>>numArc>>nomArc>>typeArc>>ext1>>ext2>>tpsTrajet;
+        ifs>>numArc>>nomArc>>typeArc>>ext1>>ext2;
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture des arcs");
-        m_arc.push_back(new Arc(numArc,nomArc,typeArc,m_sommet[ext1-1],m_sommet[ext2-1],tpsTrajet));
+        m_arc.push_back(new Arc(numArc,nomArc,typeArc,m_sommet[ext1-1],m_sommet[ext2-1]));
     }
 
     /**AFFICHAGE DES ARCS**/
-    /*std::cout<<"\nNbr arcs = "<< m_nbrArc <<std::endl;
+    std::cout<<"\nNbr arcs = "<< m_nbrArc <<std::endl;
     std::cout<<"\nARCS :"<<std::endl;
     for (auto a : m_arc)
     {
         std::cout << a->getNumero() << " " << a->getNom() << " " << a->getType()<<" " ;
         a->afficher();
-    }*/
+    }
 
 }
 
