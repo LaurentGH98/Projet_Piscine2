@@ -1,6 +1,7 @@
 #ifndef SOMMET_H_INCLUDED
 #define SOMMET_H_INCLUDED
 #include <string>
+#include <vector>
 
 //Sommet = point de la station
 
@@ -11,6 +12,7 @@ private:
     std::string m_nom;
     int m_altitude;
     bool m_marque; //pour Dijkstra
+    std::vector <int > m_connexe; // connexité entre les sommets (Kruskal)
 
 public:
     ///constructeur et destructeur
@@ -29,6 +31,11 @@ public:
 
     ///méthodes
     void afficherSommet()const; //on affiche le numéro du sommet et/ou son nom; pour Dijkstra
+
+    /// Kruskal
+    bool verif_connexe(Sommet * S2);
+    std::vector<int>getConnexe();
+    void addConnexe(int A);
 
 };
 

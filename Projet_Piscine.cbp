@@ -39,10 +39,6 @@
 		<Unit filename="Sommet.cpp" />
 		<Unit filename="Sommet.h" />
 		<Unit filename="main.cpp" />
-		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
-		</Extensions>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

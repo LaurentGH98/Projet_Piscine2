@@ -24,7 +24,10 @@ public:
     std::string getType()const;
     std::pair<Sommet*,Sommet*> getSommetAdj()const;
 
-    void afficher()const; //affiche les attributs d'un arc
+    ///methode affiche les attributs d'un arc
+    void afficher()const;
+
 };
 
 #endif // ARC_H_INCLUDED
+
