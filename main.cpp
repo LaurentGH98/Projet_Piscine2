@@ -6,7 +6,8 @@ int main()
     Graphe g{"data_arcs.txt"};
 
    // g.chemin_interessant();
-    g.Menu();
+    g.Menu(); //c'est le menu
+
 
 
     return 0;
