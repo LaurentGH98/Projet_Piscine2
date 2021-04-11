@@ -1,6 +1,8 @@
 #include "Graphe.h"
 #include <fstream>
-#include <queue>
+#include <set> //au cas où, sil à l'affichage on ne veut pas de doublons pour les successeurs
+//vu qu'il y a potentiellement plusieurs pistes d'un sommet à l'autre
+#include <queue> //pour BFS et Dijkstra
 
 //HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);//Ici, on récupère un handle vers ce qui représente la sortie standard sous Windows.
 
@@ -38,16 +40,15 @@ Graphe::Graphe(std::string nomFichier)
 
     int numArc, ext1,ext2;
     std::string nomArc, typeArc;
-    float tpsTrajet;
     for (int i=0; i<m_nbrArc; ++i)
     {
-        ifs>>numArc>>nomArc>>typeArc>>ext1>>ext2>>tpsTrajet;
+        ifs>>numArc>>nomArc>>typeArc>>ext1>>ext2;
         if ( ifs.fail() )
             throw std::runtime_error("Probleme lecture des arcs");
-        m_arc.push_back(new Arc(numArc,nomArc,typeArc,m_sommet[ext1-1],m_sommet[ext2-1],tpsTrajet, interet));
+        m_arc.push_back(new Arc(numArc,nomArc,typeArc,m_sommet[ext1-1],m_sommet[ext2-1], interet));
     }
 
-    // lecture des arcs
+    // lecture des interets
     for(int i=0; i<12; i++)
     {
         ifs>>interet;
@@ -175,7 +176,9 @@ Graphe::Graphe(std::string nomFichier)
                 }
             }
         }
+        //m_arc.push_back(new Arc(numArc,nomArc,typeArc,m_sommet[ext1-1],m_sommet[ext2-1], interet));
     }
+
 
     for(unsigned int i=0 ; i<m_arc.size(); i++)
     {
@@ -673,14 +676,14 @@ void Graphe::dijkstra()
         while( ant != (depart-1) )
         {
             std::cout <<std::endl <<"==>"<< m_sommet[ant]->getNom() ;
-            std::cout<<std::endl << "[" << trajet[ant]->getNom() << "] " << trajet[ant]->getType() << "  " << trajet[ant]->getDuree() <<" minutes" ;
+            std::cout<<std::endl << "[" << trajet[ant]->getNom() << "] " << trajet[ant]->getType() << "  " << trajet[ant]->getDuree()/60 <<" minutes " << trajet[ant]->getDuree()%60 << " secondes";
             ant=antecedent[ant]->getNumero()-1;
             nmb++;
         }
 
         std::cout<< std::endl <<std::endl << "==>" << m_sommet[ant]->getNom();
 
-        std::cout << std::endl <<std::endl<< "Temps de l'itineraire: environ "<< distance[arrive-1] << " minutes"  ;
+        std::cout << std::endl <<std::endl<< "Temps de l'itineraire: environ "<< distance[arrive-1]/60 << " minutes " <<  distance[arrive-1]%60 << " secondes" ;
         std::cout << std::endl << std::endl;
 
     }
@@ -792,6 +795,7 @@ void Graphe::Menu()
             std::cout<<"#__/__/_______/___/__\\___\\__________________________________________________#"<<std::endl;
             std::cout<<"#############################################################################"<<std::endl;
             // bfs les plus courts chemins (4.4)
+            parcoursBFS();
             std::cout << std::endl;
             system("PAUSE");
             system("cls");
@@ -977,3 +981,146 @@ void Graphe::Menu()
                             --> https://www.asciiart.eu/sports-and-outdoors/skiing
                             --> https://www.asciiart.eu/nature/snows
                             --> https://www.asciiart.eu/holiday-and-events/christmas/snowmen*/
+
+
+/*
+void Graphe::donneOrientation() //ou "affecteOrientation" car on ne fait que set l'orientation, on ne la retrourne pas
+{
+    int numSommetActuel=1;//compteur
+    for (auto elem : m_sommet) //pour parcourir 37 sommets
+    {
+        for (auto elem : m_arc)
+        {
+            if(elem->getSommetAdj().first->getNumero()==numSommetActuel) //si le sommet actuel de la boucle est l'ext1, alors on a un arc sortant
+            {
+                elem->setOrientation(1); //1 pour sortant
+            }
+            else if (elem->getSommetAdj().second->getNumero()==numSommetActuel) //sinon (si le sommet actuel de la boucle est l'ext2, alors il est entrant)
+                elem->setOrientation(0); //0 pour entrant
+            numSommetActuel++;
+        }
+    }
+
+
+}*/
+
+///Trouve les successeurs d'un sommet (on peut par exemple passer en paramètre getSommetAdj.first)
+///Cette méthode donne les sommets successeurs, or pour le BFS on ne tient pas compte de la pondération et des différents trajets
+///du coup on peut virer les doublons (car potentiellement plusieurs trajets entre un sommet et un autre) et faire un set
+///puisqu'on ne veut que les sommets.
+///Le BFS recherche le plus court chemin en nombre d'arcs, donc 1 seul trajet d'un sommet à l'autre suffit
+void Graphe::trouverSuccesseurs(int numeroExt1)
+{
+    //on appelle donneOrientation pour affecter l'orientation des arcs
+    //donneOrientation(); Pas nécessaire finalement
+
+    std::set<Sommet*> listeSucc; //set des successeurs pour éviter doublons
+
+
+    for(auto elem : m_arc)
+    {
+        if (elem->getSommetAdj().first->getNumero()==numeroExt1)
+        {
+            //on ajoute les successeurs du sommet actuel à la liste
+            listeSucc.insert(elem->getSommetAdj().second);
+            //on l'ajoute aux m_successeurs
+            m_sommet[numeroExt1-1]->ajouterSuccesseur(elem->getSommetAdj().second);
+        }
+    }
+
+    //on affiche les successeurs du sommet
+    /*std::cout<<"Le(s) successeur(s) de "<<numeroExt1<<" est/sont : "<< std::endl;
+    for (auto elem : listeSucc)
+    {
+        std::cout<<elem->getNumero()<<std::endl;
+    }*/
+
+}
+
+
+///ParcoursBFS
+void Graphe::parcoursBFS()
+{
+    int numeroSommetDeDepart=-1;
+    std::vector<Sommet*> listePredecesseurs(m_nbrSommet); //stocke les numéros des prédecesseurs, de taille l'ordre du graphe
+    for (int i=0; i<(int)listePredecesseurs.size(); ++i)
+        listePredecesseurs[i] = nullptr;
+
+
+    std::queue <Sommet*> file;  //déclaration d'une file
+
+    //demande à l'utilisateur le point de départ (en le blindant
+    std::cout<<"A partir de quel sommet souhaitez vous demarrer ?"<<std::endl;
+    std::cout<<std::endl;
+
+    while (numeroSommetDeDepart<=0 || numeroSommetDeDepart>=m_nbrSommet)
+    {
+        std::cout<<"Saisir un numero valide : ";
+        std::cin>>numeroSommetDeDepart;
+    }
+
+    for (auto elem : m_sommet)
+    {
+        if (elem->getNumero()==numeroSommetDeDepart)
+        {
+            file.push(elem);
+            elem->setCouleur(1);
+        }
+    }
+
+    for(auto elem : m_sommet)
+    {
+        trouverSuccesseurs(elem->getNumero());
+    }
+
+
+    while (!(file.empty()))     ///Tant que la file n'est pas vide
+    {
+        for (auto sommet : file.front()->getSuccesseur())      //parcours des adjacents du premier sommet de la file
+        {
+            if (sommet->getCouleur () == 0) //si le sommet est blanc
+            {
+                file.push(sommet); //on l'enfile
+                sommet->setCouleur (1); //on le met en gris
+                listePredecesseurs [sommet->getNumero()] = file.front() ;
+            }
+        }
+
+        if (file.front()->getCouleur() == 1) //si le premier sommet de la file est gris
+            file.front()->setCouleur(2); //on le passe en noir
+
+        file.pop(); //on défile
+    }
+
+    if(file.empty())
+    {
+        std::cout << std::endl;
+    }
+
+
+    ///------------------------------------PARTIE AFFICHAGE-------------------------------///
+    std::cout << "Parcours BFS a partir du sommet " << numeroSommetDeDepart <<std::endl;
+
+    int numPredecesseur =0;
+
+    for (unsigned int i=0; i<listePredecesseurs.size()+1; ++i)  ///Parcours du vecteur de predecesseur
+    {
+        if (listePredecesseurs[i]!= nullptr)
+        {
+            std::cout << i;
+            numPredecesseur = i;
+
+            while (listePredecesseurs[numPredecesseur]!=nullptr)     ///Tant que il existe des prédecesseurs
+            {
+                std::cout << " <-- " << listePredecesseurs[numPredecesseur]->getNumero();
+                numPredecesseur = listePredecesseurs[numPredecesseur]->getNumero();
+            }
+            std::cout << std::endl;
+        }
+        else
+        {
+            std::cout<<"Sommet d'arrivee confondu avec le sommet de depart."<<std::endl;
+        }
+    }
+    std::cout << std::endl;
+}

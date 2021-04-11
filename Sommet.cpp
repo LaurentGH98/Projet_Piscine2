@@ -28,24 +28,43 @@ std::string Sommet::getNom()const
     return m_nom;
 }
 
+int Sommet::getCouleur() const
+{
+    return m_couleur;
+}
+
 bool Sommet::getMarque()const
 {
     return m_marque;
 }
 
+std::set<Sommet*> Sommet::getSuccesseur() const
+{
+    return m_successeurs;
+}
 
-/// setter
+
+/// setters
+void Sommet::setCouleur (int couleur)
+{
+    m_couleur=couleur;
+}
+
 void Sommet::setMarque(bool marque)
 {
     m_marque=marque;
 }
 
-///méthode
+///méthodes
 void Sommet::afficherSommet() const
 {
     std::cout<<" "<< m_numero << " :  " << m_nom;
 }
 
+void Sommet::ajouterSuccesseur(Sommet* voisin) //ajoute un sommet adjacent
+{
+    m_successeurs.insert(voisin);
+}
 
 ///connexité
 /*

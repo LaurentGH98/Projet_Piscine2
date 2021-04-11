@@ -33,6 +33,9 @@ public:
 
 
     ///4.4 ///
+    //void donneOrientation(); //affecte l'orientation des arcs en parcourant la liste d'arcs, 0 pour entrant 1 pour sortant
+    void trouverSuccesseurs(int numeroExt1);
+    void parcoursBFS();
     void dijkstra(); // réutilisation de Dijkstra pour le 4.5
 
 
