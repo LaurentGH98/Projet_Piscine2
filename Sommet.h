@@ -11,29 +11,30 @@ private:
     int m_numero;
     std::string m_nom;
     int m_altitude;
-    bool m_marque; //pour Dijkstra
-    std::vector <int > m_connexe; // connexité entre les sommets (Kruskal)
+    bool m_marque; // lorsqu'un sommet est decouvert
+    std::vector <int > m_connexe; // connexité entre les sommets
 
 public:
-    ///constructeur et destructeur
+    /// constructeur et destructeur
     Sommet(int num, std::string nom, int altitude); //surcharge pour ces 3 attributs mais initialisation du bool m_marque à 0
                                                     //en effet pour Dijkstra, les sommets sont d'abord non marqué
     ~Sommet();
 
-    ///getters
+    /// getters
     int getNumero() const;
     int getAltitude() const;
     std::string getNom() const;
     bool getMarque() const;
 
-    ///setters
+    /// setter
     void setMarque (bool marque);
 
-    ///méthodes
+
+    /// méthode
     void afficherSommet()const; //on affiche le numéro du sommet et/ou son nom; pour Dijkstra
 
-    /// Kruskal
-    bool verif_connexe(Sommet * S2);
+    /// connexité
+    //bool verif_connexe(Sommet * S2);
     std::vector<int>getConnexe();
     void addConnexe(int A);
 

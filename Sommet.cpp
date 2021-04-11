@@ -1,18 +1,18 @@
 #include <iostream>
 #include "Sommet.h"
 
-///constructeur
+/// constructeur
 Sommet::Sommet(int num, std::string nom, int altitude):m_numero(num),m_nom(nom),m_altitude(altitude)
 {
     m_marque=0;
 }
 
-///destructeur
+/// destructeur
 Sommet::~Sommet()
 {
 }
 
-///getters
+/// getters
 int Sommet::getNumero()const
 {
     return m_numero;
@@ -34,22 +34,21 @@ bool Sommet::getMarque()const
 }
 
 
-///setter(s)
+/// setter
 void Sommet::setMarque(bool marque)
 {
     m_marque=marque;
 }
 
-
-///méthode(s)
+///méthode
 void Sommet::afficherSommet() const
 {
     std::cout<<" "<< m_numero << " :  " << m_nom;
 }
 
-///méthodes pour Kruskal///
 
-//connexité
+///connexité
+/*
 bool Sommet::verif_connexe(Sommet * S2)
 {
     bool res = true;
@@ -62,15 +61,17 @@ bool Sommet::verif_connexe(Sommet * S2)
         }
     }
     return res;
-}
+}*/
 
-//getter connexe
+
+// getter connexe
 std::vector<int> Sommet::getConnexe()
 {
     return m_connexe;
 }
 
-//méthode ajt connexe
+
+// méthode ajout connexe
 void Sommet::addConnexe(int A)
 {
     m_connexe.push_back(A);
