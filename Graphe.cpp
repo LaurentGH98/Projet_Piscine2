@@ -485,7 +485,7 @@ void Graphe::chemin_interessant()
                 std::cout << "Saisie valide!" <<std::endl;
                 for(unsigned int i=0 ; i< m_arc.size() ; i++ )
                 {
-                    if(m_arc[i]->getType() == "N") // on lui retire les pistes noires et rouges
+                    if(m_arc[i]->getType() == "N") // on lui retire les pistes noires
                         m_arc[i]->set_actif(false);
                 }
             }
@@ -504,6 +504,11 @@ void Graphe::chemin_interessant()
 
     else if(niveau == 3) // professionnel
     {
+        /*std::cout << "\nAVANT:" << std::endl;
+        for(auto a : m_arc)
+        {
+            std::cout << a->getType() << std::endl;
+        }*/
         std::cout << "Z-Rien\nV-Piste Verte\nB-Piste bleue\nR-Piste Rouge\nN-Piste Noire\nKL-Piste de Kilometre Lance\nSURF-Snowpark" << std::endl;
         std::cout << "TPH-Telepherique\nTC-Telecabine\nTSD-Telesiege debrayable\nTS-Telesiege\nTK-Teleski\nBUS-Navette" << std::endl;
         std::cout << "\nQue voulez-vous eviter ? \n(Veuillez saisir Z pour terminer votre saisi)\n" <<std::endl;
@@ -534,12 +539,19 @@ void Graphe::chemin_interessant()
                 std::cout << "ok!" << std::endl;
                 for(unsigned int i=0 ; i< m_arc.size() ; i++ )
                 {
-                    if( m_arc[i]->getType() == choix_utilisateur) // on lui retire les pistes noires et vertes
+                    if( m_arc[i]->getType() == choix_utilisateur) // on lui retire les pistes saisi
                         m_arc[i]->set_actif(false);
                 }
 
             }
         }
+        /*std::cout << "\nAPRES:" << std::endl;
+        for(auto a : m_arc)
+        {
+            if(a->get_actif()==true)
+                std::cout << a->getType() << std::endl;
+        }*/
+
     }
 
     dijkstra(); // on appelle l'algorithme de Dijkstra
@@ -1042,7 +1054,7 @@ void Graphe::trouverSuccesseurs(int numeroExt1)
 void Graphe::parcoursBFS()
 {
     int numeroSommetDeDepart=-1;
-    std::vector<Sommet*> listePredecesseurs(m_nbrSommet); //stocke les numéros des prédecesseurs, de taille l'ordre du graphe
+    std::vector<Sommet*> listePredecesseurs(m_nbrSommet+1); //stocke les numéros des prédecesseurs, de taille l'ordre du graphe
     for (int i=0; i<(int)listePredecesseurs.size(); ++i)
         listePredecesseurs[i] = nullptr;
 
@@ -1092,18 +1104,13 @@ void Graphe::parcoursBFS()
         file.pop(); //on défile
     }
 
-    if(file.empty())
-    {
-        std::cout << std::endl;
-    }
-
 
     ///------------------------------------PARTIE AFFICHAGE-------------------------------///
     std::cout << "Parcours BFS a partir du sommet " << numeroSommetDeDepart <<std::endl;
 
     int numPredecesseur =0;
 
-    for (unsigned int i=0; i<listePredecesseurs.size()+1; ++i)  ///Parcours du vecteur de predecesseur
+    for (unsigned int i=0; i<listePredecesseurs.size(); i++)  ///Parcours du vecteur de predecesseur
     {
         if (listePredecesseurs[i]!= nullptr)
         {
@@ -1117,10 +1124,15 @@ void Graphe::parcoursBFS()
             }
             std::cout << std::endl;
         }
+        else if(i==0)
+        {
+            std::cout<<"Sommet 0 inexistant."<<std::endl;
+        }
         else
         {
             std::cout<<"Sommet d'arrivee confondu avec le sommet de depart."<<std::endl;
         }
     }
+
     std::cout << std::endl;
 }
